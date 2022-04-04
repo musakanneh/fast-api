@@ -1,3 +1,4 @@
+from optparse import Option
 from pydantic import BaseModel
 from uuid import UUID, uuid4
 from typing import Optional, List
@@ -19,4 +20,9 @@ class User(BaseModel):
     middle_name: Optional[str]
     gender: Gender
     roles: List[Role]
-    
+
+class UserUpateRequest(BaseModel):
+    first_name: Optional[str]
+    last_name: Optional[str]
+    middle_name: Optional[str]
+    roles: Optional[List[Role]]
