@@ -1,4 +1,5 @@
 from optparse import Option
+from unicodedata import numeric
 from pydantic import BaseModel
 from uuid import UUID, uuid4
 from typing import Optional, List
@@ -26,3 +27,9 @@ class UserUpateRequest(BaseModel):
     last_name: Optional[str]
     middle_name: Optional[str]
     roles: Optional[List[Role]]
+
+
+class AddItem(BaseModel):
+    name: str
+    price: float
+    is_offer: Optional[bool] = None

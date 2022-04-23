@@ -1,8 +1,12 @@
+from this import d
+from unicodedata import name
 from fastapi import FastAPI
 from typing import List
-from models import User, Gender, Role, UserUpateRequest
+from models import User, Gender, Role, AddItem, UserUpateRequest
 from http.client import HTTPException
 from uuid import UUID, uuid4
+from pydantic import BaseModel
+from typing import Optional, List
 
 app = FastAPI()
 
@@ -20,6 +24,12 @@ db:List[User] = [
         last_name="Kanneh",
         gender=Gender.female,
         roles=[Role.admin, Role.user]
+    ),
+    AddItem(
+        id=uuid4(),
+        name="Some item name",
+        price=2.3,
+        is_offer=True
     )
 ]
 
@@ -63,3 +73,12 @@ async def update_user(user_update: UserUpateRequest, user_id: UUID):
         status_code=404,
         detail=f"user with id {user_id} does not exist"
     )
+
+@app.post("/api/v1/users/{item_id}")
+async def add_item(item_id: UUID):
+    db.append(item_id)
+    return {"item_id" : item_id}
+
+@app.get("/items/{item_id}")
+def read_item(item_id: int, q: Optional[str] = None):
+    return {"item_id": item_id, "q": q}
